@@ -1,0 +1,25 @@
+    Rigidbody rb;
+    public float speed;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if( other.gameObject.tag == "pickUp" )
+        {
+            other.gameObject.SendMessage("start_collect_anim", transform);
+        }
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        speed = 1000;
+        rb = GetComponent<Rigidbody>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        float MovX = Input.GetAxis("Horizontal");
+        float MovZ = Input.GetAxis("Vertical");
+        rb.AddForce((new Vector3(MovX, 0, MovZ))*Time.deltaTime*speed);
+    }
