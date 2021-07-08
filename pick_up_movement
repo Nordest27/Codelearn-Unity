@@ -1,0 +1,38 @@
+    public float speed;
+    float ini_pos_y;
+    float t;
+    bool collect_anim;
+    Transform player_transform;
+
+    public void start_collect_anim(Transform trans)
+    {
+        collect_anim = true;
+        player_transform = trans;
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        speed = 1;
+        ini_pos_y = transform.position.y;
+        t = 0;
+        collect_anim = false;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        t += Time.deltaTime;
+        transform.Rotate(new Vector3(0, speed, 0));
+        Vector3 pos = transform.position;
+        transform.position = new Vector3(pos.x, ini_pos_y + Mathf.Sin(t)/2, pos.z);
+
+        if (collect_anim && transform.localScale.x > 0.01f)
+        {
+            transform.localScale -= new Vector3(0.05f, 0.05f, 0.05f);
+            transform.position = Vector3.MoveTowards(transform.position, player_transform.position, Time.deltaTime * 10);
+        }
+        else if (collect_anim)
+            Destroy(gameObject);
+
+    }
